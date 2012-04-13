@@ -8,6 +8,8 @@
 #include "SDL.h"
 using namespace std;
 
+
+
 int SDL_main(int, char**) {
 	//init SDL
 	if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -15,13 +17,20 @@ int SDL_main(int, char**) {
 		return 1;
 	}
 
+	//init OpenGL
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5); //funky numbers? what do these do?
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
 	//init the screen
-	SDL_Surface* pScreen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
-	if (pScreen == NULL) {
+	if (SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE|SDL_OPENGL) == NULL) {
 		cerr << "Failed to initialise the  screen" << endl;
 		return 1;
 	}
 
+	//program loop
 	bool bRunning = true;
 
 	while(bRunning) {
@@ -35,8 +44,11 @@ int SDL_main(int, char**) {
 			}
 		}
 
+		//proc
+		//
+
 		//draw to the screen
-		SDL_Flip(pScreen);
+		SDL_GL_SwapBuffers();
 	}
 
 	SDL_Quit();
