@@ -1,0 +1,27 @@
+TODO:
+
+Create a model class, to deal with the ingame rendering.
+Create a scene where I can move around.
+
+-------------------------
+
+This model will read in .raw files or a custom file format from blender 2.49a
+There will be no quads for now
+This method is bulky, but simple
+
+struct Point: GLfloat[3]
+struct Triangle: Point[3]
+
+Mesh:
+	/* Public access members */
+	Constructor
+	Destructor
+	
+	Load(szFileName)
+	Save(szFileName)
+	
+	Render()
+	
+	/* Private access members */
+	LList<Triangle> array
+end
