@@ -1,16 +1,38 @@
 /* File Name: main.cpp
- * Copyright: (c) Kayne Ruse, all rights reserved.
  * Author: Kayne Ruse
- * Date: 
+ * Date: 16/4/2012
+ * Copyright: (c) Kayne Ruse 2012
+ * 
+ * This file is part of Project RPG.
+ * 
+ * Project RPG is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Project RPG is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Project RPG.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  * Description: 
- * This is my testbed for learning OpenGL, also using SDL.
- * So far, I have a rotating triangle, without culling.
- * No control for the speed of the triangle, FPSUtility isn't here yet.
+ *     This is my testbed for learning OpenGL, also using SDL.
+ *     So far, I have a rotating triangle, without culling.
+ *     No control for the speed of the triangle, FPSUtility isn't here yet.
 */
 #include <iostream>
+#include <exception>
 #include "SDL.h"
 #include "SDL_opengl.h"
 using namespace std;
+
+#include "llist.h"
+#include "mesh.h"
+
+Mesh g_mesh;
 
 //-------------------------
 //Preprocessor directives
@@ -36,8 +58,53 @@ void DrawPoint(GLfloat* vert, GLubyte* col);
 //-------------------------
 
 int SDL_main(int, char**) {
+/*	Mesh::Triangle triangle(Mesh::Point(1, 2, 3), Mesh::Point(4, 5, 6), Mesh::Point(7, 8, 9));
+
+	try {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				cout << triangle[i][j] << endl;
+			}
+		}
+	}
+	catch(exception& e) {
+		cout << "exception: " << e.what() << endl;
+	}
+
+	return 0;
+//*/
+/*	LList<int> list;
+
+	list.Push(new int(1));
+	list.Push(new int(2));
+	list.Push(new int(3));
+
+	for (LList<int>::iterator it = list.Head(); it != NULL; it = it->m_pNext) {
+		cout << *(it->m_pData) << endl;
+	}
+
+	delete list.Pop();
+
+	for (LList<int>::iterator it = list.Head(); it != NULL; it = it->m_pNext) {
+		cout << *(it->m_pData) << endl;
+	}
+
+	return 0;
+//*/
 	InitSDL();
 	InitOpenGL();
+
+	//debug
+	LList<Mesh::Triangle>* pList = g_mesh.GetFaceList();
+
+	pList->Push(
+		new Mesh::Triangle(
+				//debug: -2 brings it into view
+				Mesh::Point( 0, 0, -2),
+				Mesh::Point( 1, 0, -2),
+				Mesh::Point( 1, 1, -2)
+			)
+		);
 
 	bool bRunning = true;
 	while(bRunning) {
@@ -125,7 +192,9 @@ void DrawShape() {
 
 	//draw my stuff
 
-	//colours
+	g_mesh.Render();
+
+/*	//colours
 	static GLubyte white[]	= {255, 255, 255, 255};
 	static GLubyte black[]	= {0, 0, 0, 255};
 	static GLubyte red[]	= {255, 0, 0, 255};
@@ -174,6 +243,7 @@ void DrawShape() {
 	DrawPoint(v4, blue);
 
 	glEnd();
+*/
 }
 
 void DrawPoint(GLfloat* vert, GLubyte* col) {

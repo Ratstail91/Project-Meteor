@@ -1,0 +1,36 @@
+This is a simple single linked list, works as a stack.
+There is no need for optimisation yet.
+This works with pointers.
+
+WARNING! The name of this class is currently a misnomer.
+This "LList" class needs to be renamed "LStack" since it acts as a stack.
+
+template<T>
+
+Node<T>:
+	-data
+	-next
+end
+
+LList<T>:
+	T* Push(T*)
+	T* Pop()
+	
+	T* Head();
+	
+	-head
+end
+
+-------------------------
+
+Linked list complete set:
+
+SLNode	-single link node
+DLNode	-double link node
+
+SLList	-single linked list, uses SLNode
+DLList	-double linked list, uses DLNode
+LStack	-Linked Stack, uses SLNode
+LQue	-Linked Que, uses SLNode
+BTree	-Binary tree (what are these for anyway?)
+etc...

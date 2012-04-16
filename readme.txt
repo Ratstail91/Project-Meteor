@@ -1,5 +1,7 @@
 readme.txt
 
+you can contact me at ratstail91@yahoo.com.au
+
 Please see the documentation for more information.
 
 -------------------------

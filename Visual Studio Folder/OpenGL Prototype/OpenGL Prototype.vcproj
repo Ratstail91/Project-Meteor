@@ -188,7 +188,35 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath="..\..\Documentation\Pseudocode\OpenGL Prototype\LList.txt"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Documentation\Pseudocode\OpenGL Prototype\Pseudocode.txt"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Mesh"
+			>
+			<File
+				RelativePath=".\mesh.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mesh.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="LList"
+			>
+			<File
+				RelativePath=".\llist.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\llist.h"
 				>
 			</File>
 		</Filter>

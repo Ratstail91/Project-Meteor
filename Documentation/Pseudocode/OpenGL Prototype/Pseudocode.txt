@@ -19,6 +19,9 @@ Mesh:
 	
 	Load(szFileName)
 	Save(szFileName)
+	Clear();
+	
+	GetList();
 	
 	Render()
 	

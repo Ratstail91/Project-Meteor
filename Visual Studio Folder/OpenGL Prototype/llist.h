@@ -1,4 +1,4 @@
-/* File Name: main.cpp
+/* File Name: llist.h
  * Author: Kayne Ruse
  * Date: 16/4/2012
  * Copyright: (c) Kayne Ruse 2012
@@ -19,13 +19,43 @@
  * along with Project RPG.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Description: 
- *     Nothing says friendly like a big-ass license statement at the top of
- *     your source code.
+ *     This is a simple single linked list, works as a stack.
+ *     There is no need for optimisation yet.
+ *     This works with pointers.
+ *     
+ *     WARNING! The name of this class is currently a misnomer.
+ *     This "LList" class needs to be renamed "LStack" since it acts as a stack.
 */
-#include <iostream>
-using namespace std;
+#ifndef KR_LLIST_H_
+#define KR_LLIST_H_ 20120416
 
-int main(int argc, char** argv) {
-	cout << "Hello world" << endl;
-	return 0;
-}
+template<typename T>
+struct LLNode {
+	T* m_pData;
+	LLNode* m_pNext;
+};
+
+template<typename T>
+class LList {
+public:
+	/* Internal type declarations */
+	typedef LLNode<T>* iterator;
+
+	/* Public access members */
+	LList();
+	~LList();
+
+	T* Push(T*);
+	T* Pop();
+
+	LLNode<T>* Head();
+
+private:
+	/* Private access members */
+	LLNode<T>* m_pHead;
+};
+
+//template quirk
+#include "llist.cpp"
+
+#endif
