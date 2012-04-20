@@ -34,7 +34,7 @@ extern "C" {
 
 /* Callback types */
 typedef void (*xBasicCallback)(void);
-typedef void (*xEventCallback)(SDL_Event const);
+typedef void (*xEventCallback)(SDL_Event const* const);
 
 /* xFramework functions */
 int xSetInitCallback	(xBasicCallback);

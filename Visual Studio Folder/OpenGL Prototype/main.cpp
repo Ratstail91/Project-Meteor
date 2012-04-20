@@ -33,8 +33,8 @@ void Quit();
 void Update();
 void Render();
 
-void KeyDown(SDL_Event);
-void KeyUp(SDL_Event);
+void KeyDown(SDL_Event const*);
+void KeyUp(SDL_Event const*);
 
 SDL_Surface* g_pScreen;
 
@@ -80,14 +80,14 @@ void Render() {
 	SDL_Flip(g_pScreen);
 }
 
-void KeyDown(SDL_Event event) {
-	switch(event.key.keysym.sym) {
+void KeyDown(SDL_Event const* const event) {
+	switch(event->key.keysym.sym) {
 		case SDLK_ESCAPE:
 			xQuit();
 			break;
 	}
 }
 
-void KeyUp(SDL_Event event) {
+void KeyUp(SDL_Event const* event) {
 	//
 }

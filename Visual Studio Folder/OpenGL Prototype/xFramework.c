@@ -83,7 +83,7 @@ void xProc() {
 	while(g_bRunning) {
 		while(SDL_PollEvent(&event)) {
 			if (g_fpEvents[event.type] != NULL)
-				g_fpEvents[event.type](event);
+				g_fpEvents[event.type](&event);
 		}
 
 		if (g_fpUpdate != NULL) g_fpUpdate();
