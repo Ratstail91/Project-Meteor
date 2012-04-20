@@ -23,31 +23,60 @@
 */
 #include <iostream>
 #include "SDL.h"
+#include "SDL_opengl.h"
 #include "xFramework.h"
 using namespace std;
 
 //-------------------------
+//preprocessor directives
+//-------------------------
 
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+#define SCREEN_BPP (SDL_GetVideoInfo()->vfmt->BitsPerPixel)
+#define SCREEN_FLAGS (SDL_HWSURFACE|SDL_OPENGL)
+
+#define SCALE(x) x
+
+//-------------------------
+//Declarations
+//-------------------------
+
+//xFramework
 void Init();
-void Quit();
 void Update();
 void Render();
 
-void KeyDown(SDL_Event const*);
-void KeyUp(SDL_Event const*);
+//event loop
+void Quit				(SDL_Event const* const) { xQuit(); };
+void MouseMotion		(SDL_Event const* const);
+void MouseButtonDown	(SDL_Event const* const);
+void MouseButtonUp		(SDL_Event const* const);
+void KeyDown			(SDL_Event const* const);
+void KeyUp				(SDL_Event const* const);
 
-SDL_Surface* g_pScreen;
+//utilities(temps)
+void DrawPoint(GLfloat* vert, GLubyte* col) {
+	glColor4ubv(col);
+	glVertex3fv(vert);
+}
 
+//-------------------------
+//Mainline
 //-------------------------
 
 int SDL_main(int, char**) {
 	xSetInitCallback(Init);
-	xSetQuitCallback(Quit); //another possibility is xSetQuitCallback(SDL_Quit);
+	xSetQuitCallback(SDL_Quit);
 	xSetUpdateCallback(Update);
 	xSetRenderCallback(Render);
 
-	xSetEventCallback(KeyDown, SDL_KEYDOWN);
-	xSetEventCallback(KeyUp, SDL_KEYUP);
+	xSetEventCallback(Quit,				SDL_QUIT);
+	xSetEventCallback(MouseMotion,		SDL_MOUSEMOTION);
+	xSetEventCallback(MouseButtonDown,	SDL_MOUSEBUTTONDOWN);
+	xSetEventCallback(MouseButtonUp,	SDL_MOUSEBUTTONUP);
+	xSetEventCallback(KeyDown,			SDL_KEYDOWN);
+	xSetEventCallback(KeyUp,			SDL_KEYUP);
 
 	xProc();
 
@@ -55,21 +84,46 @@ int SDL_main(int, char**) {
 }
 
 //-------------------------
+//Definitions
+//-------------------------
 
 void Init() {
+	//init SDL
 	if (SDL_Init(SDL_INIT_VIDEO)) {
-		cerr << "Failed to init video" << endl;
+		cerr << "Failed to init SDL video" << endl;
 	}
 
-	g_pScreen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
+	//set OpenGL attributes
+	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	if (g_pScreen == NULL) {
+	//set video mode
+	if (SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SCREEN_FLAGS) == NULL) {
 		cerr << "Failed to set video mode" << endl;
 	}
-}
 
-void Quit() {
-	SDL_Quit();
+	//shading model
+	glShadeModel(GL_SMOOTH);
+
+	//culling
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW); //CLOCKWISE 
+	glEnable(GL_CULL_FACE);
+
+	glEnable(GL_DEPTH_TEST);
+
+	//viewport
+	glClearColor(0, 0, 0, 0);
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	//matrix
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+
+	//perspective
+	gluPerspective(60.0, (double)(SCREEN_WIDTH)/(double)(SCREEN_HEIGHT), 1.0, 1024.0);
+	gluLookAt(0,-2, 2, 0, 0, -1, 0, 1, 0);
 }
 
 void Update() {
@@ -77,7 +131,77 @@ void Update() {
 }
 
 void Render() {
-	SDL_Flip(g_pScreen);
+	//prep OpenGL
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	//draw my stuff
+	//colours
+	static GLubyte white[]	= {255, 255, 255, 255};
+	static GLubyte black[]	= {0, 0, 0, 255};
+	static GLubyte red[]	= {255, 0, 0, 255};
+	static GLubyte yellow[]	= {255, 255, 0, 255};
+	static GLubyte blue[]	= {0, 0, 255, 255};
+	static GLubyte green[]	= {0, 255, 0, 255};
+
+	//vertices
+	static GLfloat v1[] = {-1.0f,  1.0f, 0.0f}; //top-corner
+	static GLfloat v2[] = {-1.0f,  0.0f, 0.0f}; //right-corner
+	static GLfloat v3[] = {-1.0f,  0.0f,-1.0f}; //short-corner, into the screen
+	static GLfloat v4[] = { 1.0f,  0.0f, 0.0f}; //point-corner
+
+	//translation
+//	glTranslatef(0, -.5, -3);
+
+	//rotation
+	static float angle = 0.0f;
+	glRotatef(angle, 0.0, 1.0, 0.0 ); //comment this out to disable the rotation
+
+	if( (angle+=.1f) > 360.0f ) {
+		angle = 0.0f;
+	}
+
+	//begin the shape
+	glBegin(GL_TRIANGLES);
+
+	//side 1
+	DrawPoint(v1, green);
+	DrawPoint(v2, red);
+	DrawPoint(v3, yellow);
+
+	//side 2
+	DrawPoint(v1, green);
+	DrawPoint(v4, blue);
+	DrawPoint(v2, red);
+
+	//side 3
+	DrawPoint(v1, green);
+	DrawPoint(v3, yellow);
+	DrawPoint(v4, blue);
+
+	//base
+	DrawPoint(v2, red);
+	DrawPoint(v4, blue);
+	DrawPoint(v3, yellow);
+
+	glEnd();
+
+	//swap the buffers
+	SDL_GL_SwapBuffers();
+}
+
+void MouseMotion(SDL_Event const* const event) {
+	//
+}
+
+void MouseButtonDown(SDL_Event const* const event) {
+	//
+}
+
+void MouseButtonUp(SDL_Event const* const event) {
+	//
 }
 
 void KeyDown(SDL_Event const* const event) {
@@ -88,6 +212,6 @@ void KeyDown(SDL_Event const* const event) {
 	}
 }
 
-void KeyUp(SDL_Event const* event) {
+void KeyUp(SDL_Event const* const event) {
 	//
 }

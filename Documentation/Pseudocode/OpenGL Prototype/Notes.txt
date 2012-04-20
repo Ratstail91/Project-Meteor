@@ -1,0 +1,8 @@
+TODO:
+
+Create/complete a model class, to deal with the ingame rendering.
+Create a scene where the camera can move around.
+
+Official Mesh format:
+.raw
+faces are clockwise

@@ -177,18 +177,34 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
+			Name="-Classes"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<Filter
+				Name="NewFilter1"
+				>
+			</Filter>
 		</Filter>
 		<Filter
-			Name="Documentation"
+			Name="-Documentation"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath="..\..\Documentation\Pseudocode\OpenGL Prototype\Buglist.txt"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Documentation\Pseudocode\OpenGL Prototype\LList.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Documentation\Pseudocode\OpenGL Prototype\Mesh.txt"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Documentation\Pseudocode\OpenGL Prototype\Notes.txt"
 				>
 			</File>
 			<File
@@ -197,60 +213,64 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Mesh"
+			Name="-Deprecated"
 			>
-			<File
-				RelativePath=".\mesh.cpp"
+			<Filter
+				Name="Mesh"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
+				<File
+					RelativePath=".\mesh.cpp"
 					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\mesh.h"
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\mesh.h"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="LList"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
+				<File
+					RelativePath=".\llist.cpp"
 					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="LList"
-			>
-			<File
-				RelativePath=".\llist.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\llist.h"
 					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\llist.h"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="xFramework"
