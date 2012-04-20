@@ -1,4 +1,4 @@
-/* File Name: point.h
+/* File Name: plane.h
  * Author: Kayne Ruse
  * Date: 21/4/2012
  * Copyright: (c) Kayne Ruse 2012
@@ -19,42 +19,25 @@
  * along with Project RPG.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Description: 
- *     A single point in three dimensional space.
+ *     A triangular plane in 3D space.
 */
-#ifndef KR_POINT_H_
-#define KR_POINT_H_
+#ifndef KR_PLANE_H_
+#define KR_PLANE_H_
 
-#include "SDL_opengl.h"
+#include "point.h"
 
-class Point {
+class Plane {
 public:
 	/* Public access members */
-	Point();
-	Point(GLfloat, GLfloat, GLfloat);
+	Plane();
+	Plane(Point, Point, Point);
+	Point& operator[](int);
 
-	GLfloat& operator[](int);
-
-	GLfloat* GetCoords();
-
-	/* Accessors and mutators */
-	void SetPosition(GLfloat, GLfloat, GLfloat);
-	void ShiftPosition(GLfloat, GLfloat, GLfloat);
-
-	GLfloat SetX(GLfloat);
-	GLfloat SetY(GLfloat);
-	GLfloat SetZ(GLfloat);
-
-	GLfloat ShiftX(GLfloat);
-	GLfloat ShiftY(GLfloat);
-	GLfloat ShiftZ(GLfloat);
-
-	GLfloat GetX();
-	GLfloat GetY();
-	GLfloat GetZ();
+	void Render();
 
 private:
 	/* Private access members */
-	GLfloat m_fCoords[3]; //x, y, z
+	Point m_vertices[3];
 };
 
 #endif

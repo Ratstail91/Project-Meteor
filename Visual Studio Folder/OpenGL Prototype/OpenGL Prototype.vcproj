@@ -193,6 +193,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Plane"
+				>
+				<File
+					RelativePath=".\plane.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\plane.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="-Documentation"

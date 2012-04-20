@@ -29,27 +29,27 @@
 //-------------------------
 
 Point::Point() {
-	m_fVertices[0] = 0;
-	m_fVertices[1] = 0;
-	m_fVertices[2] = 0;
+	m_fCoords[0] = 0;
+	m_fCoords[1] = 0;
+	m_fCoords[2] = 0;
 }
 
 Point::Point(GLfloat a, GLfloat b, GLfloat c) {
-	m_fVertices[0] = a;
-	m_fVertices[1] = b;
-	m_fVertices[2] = c;
+	m_fCoords[0] = a;
+	m_fCoords[1] = b;
+	m_fCoords[2] = c;
 }
 
 GLfloat& Point::operator[](int i) {
 	if (i < 0 || i >= 3) {
-		throw(std::out_of_range("Unknown Mesh::Point element"));
+		throw(std::out_of_range("Unknown Point element"));
 	}
 
-	return m_fVertices[i];
+	return m_fCoords[i];
 }
 
-GLfloat* Point::GetVertices() {
-	return m_fVertices;
+GLfloat* Point::GetCoords() {
+	return m_fCoords;
 }
 
 //-------------------------
@@ -57,49 +57,49 @@ GLfloat* Point::GetVertices() {
 //-------------------------
 
 void Point::SetPosition(GLfloat a, GLfloat b, GLfloat c) {
-	m_fVertices[0] = a;
-	m_fVertices[1] = b;
-	m_fVertices[2] = c;
+	m_fCoords[0] = a;
+	m_fCoords[1] = b;
+	m_fCoords[2] = c;
 }
 
 void Point::ShiftPosition(GLfloat a, GLfloat b, GLfloat c) {
-	m_fVertices[0] += a;
-	m_fVertices[1] += b;
-	m_fVertices[2] += c;
+	m_fCoords[0] += a;
+	m_fCoords[1] += b;
+	m_fCoords[2] += c;
 }
 
 GLfloat Point::SetX(GLfloat f) {
-	return m_fVertices[0] = f;
+	return m_fCoords[0] = f;
 }
 
 GLfloat Point::SetY(GLfloat f) {
-	return m_fVertices[1] = f;
+	return m_fCoords[1] = f;
 }
 
 GLfloat Point::SetZ(GLfloat f) {
-	return m_fVertices[2] = f;
+	return m_fCoords[2] = f;
 }
 
 GLfloat Point::ShiftX(GLfloat f) {
-	return m_fVertices[0] += f;
+	return m_fCoords[0] += f;
 }
 
 GLfloat Point::ShiftY(GLfloat f) {
-	return m_fVertices[1] += f;
+	return m_fCoords[1] += f;
 }
 
 GLfloat Point::ShiftZ(GLfloat f) {
-	return m_fVertices[2] += f;
+	return m_fCoords[2] += f;
 }
 
 GLfloat Point::GetX() {
-	return m_fVertices[0];
+	return m_fCoords[0];
 }
 
 GLfloat Point::GetY() {
-	return m_fVertices[1];
+	return m_fCoords[1];
 }
 
 GLfloat Point::GetZ() {
-	return m_fVertices[2];
+	return m_fCoords[2];
 }

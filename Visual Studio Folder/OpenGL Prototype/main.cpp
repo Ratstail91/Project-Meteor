@@ -28,7 +28,10 @@
 using namespace std;
 
 #include "point.h"
+#include "plane.h"
+
 Point camera;
+Plane plane;
 
 //-------------------------
 //preprocessor directives
@@ -129,6 +132,20 @@ void Init() {
 	//perspective
 	gluPerspective(60.0, (double)(SCREEN_WIDTH)/(double)(SCREEN_HEIGHT), 1.0, 1024.0);
 //	gluLookAt(0,-2, 2, 0, 0, -1, 0, 1, 0);
+
+	//texture
+
+
+	//debug
+	plane[0][0] =  0;
+	plane[0][1] = -1;
+	plane[0][2] = -5;
+	plane[1][0] =  5;
+	plane[1][1] = -1;
+	plane[1][2] =  2;
+	plane[2][0] = -5;
+	plane[2][1] = -1;
+	plane[2][2] =  2;
 }
 
 void Update() {
@@ -157,6 +174,7 @@ void Render() {
 	static GLubyte yellow[]	= {255, 255, 0, 255};
 	static GLubyte blue[]	= {0, 0, 255, 255};
 	static GLubyte green[]	= {0, 255, 0, 255};
+	static GLubyte pink[]	= {255, 0, 255, 255};
 
 	//vertices
 	static GLfloat v1[] = {-1.0f,  1.0f, 0.0f}; //top-corner
@@ -197,6 +215,10 @@ void Render() {
 	DrawPoint(v2, red);
 	DrawPoint(v4, blue);
 	DrawPoint(v3, yellow);
+
+	//draw the pink plane
+	glColor4ubv(pink);
+	plane.Render();
 
 	glEnd();
 

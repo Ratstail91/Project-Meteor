@@ -1,4 +1,4 @@
-/* File Name: point.h
+/* File Name: plane.cpp
  * Author: Kayne Ruse
  * Date: 21/4/2012
  * Copyright: (c) Kayne Ruse 2012
@@ -19,42 +19,35 @@
  * along with Project RPG.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Description: 
- *     A single point in three dimensional space.
+ *     A triangular plane in 3D space.
 */
-#ifndef KR_POINT_H_
-#define KR_POINT_H_
+#include <stdexcept>
+#include "plane.h"
 
-#include "SDL_opengl.h"
+//-------------------------
+//Public access members
+//-------------------------
 
-class Point {
-public:
-	/* Public access members */
-	Point();
-	Point(GLfloat, GLfloat, GLfloat);
+Plane::Plane() {
+	//
+}
 
-	GLfloat& operator[](int);
+Plane::Plane(Point a, Point b, Point c) {
+	m_vertices[0] = a;
+	m_vertices[1] = b;
+	m_vertices[2] = c;
+}
 
-	GLfloat* GetCoords();
+Point& Plane::operator[](int i) {
+	if (i < 0 || i >= 3) {
+		throw(std::out_of_range("Unknown Plane element"));
+	}
 
-	/* Accessors and mutators */
-	void SetPosition(GLfloat, GLfloat, GLfloat);
-	void ShiftPosition(GLfloat, GLfloat, GLfloat);
+	return m_vertices[i];
+}
 
-	GLfloat SetX(GLfloat);
-	GLfloat SetY(GLfloat);
-	GLfloat SetZ(GLfloat);
-
-	GLfloat ShiftX(GLfloat);
-	GLfloat ShiftY(GLfloat);
-	GLfloat ShiftZ(GLfloat);
-
-	GLfloat GetX();
-	GLfloat GetY();
-	GLfloat GetZ();
-
-private:
-	/* Private access members */
-	GLfloat m_fCoords[3]; //x, y, z
-};
-
-#endif
+void Plane::Render() {
+	glVertex3fv(m_vertices[0].GetCoords());
+	glVertex3fv(m_vertices[1].GetCoords());
+	glVertex3fv(m_vertices[2].GetCoords());
+}
