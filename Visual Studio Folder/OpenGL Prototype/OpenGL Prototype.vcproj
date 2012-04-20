@@ -182,8 +182,16 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<Filter
-				Name="NewFilter1"
+				Name="Point"
 				>
+				<File
+					RelativePath=".\point.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\point.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

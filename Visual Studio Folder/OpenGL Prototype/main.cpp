@@ -19,13 +19,16 @@
  * along with Project RPG.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Description: 
- *     //...
+ *     Basic bulky camera controls.
 */
 #include <iostream>
 #include "SDL.h"
 #include "SDL_opengl.h"
 #include "xFramework.h"
 using namespace std;
+
+#include "point.h"
+Point camera;
 
 //-------------------------
 //preprocessor directives
@@ -37,6 +40,8 @@ using namespace std;
 #define SCREEN_FLAGS (SDL_HWSURFACE|SDL_OPENGL)
 
 #define SCALE(x) x
+
+#define CASE break; case
 
 //-------------------------
 //Declarations
@@ -123,11 +128,12 @@ void Init() {
 
 	//perspective
 	gluPerspective(60.0, (double)(SCREEN_WIDTH)/(double)(SCREEN_HEIGHT), 1.0, 1024.0);
-	gluLookAt(0,-2, 2, 0, 0, -1, 0, 1, 0);
+//	gluLookAt(0,-2, 2, 0, 0, -1, 0, 1, 0);
 }
 
 void Update() {
-	//
+	//debug
+	cout << camera.GetX() << "\t" << camera.GetY() << "\t" << camera.GetZ() << endl;
 }
 
 void Render() {
@@ -138,6 +144,12 @@ void Render() {
 	glLoadIdentity();
 
 	//draw my stuff
+	gluLookAt(
+		camera.GetX(), camera.GetY(), camera.GetZ(),
+		0, 0, 0,
+		camera.GetX(), camera.GetY()+1, camera.GetZ()
+		);
+
 	//colours
 	static GLubyte white[]	= {255, 255, 255, 255};
 	static GLubyte black[]	= {0, 0, 0, 255};
@@ -157,7 +169,7 @@ void Render() {
 
 	//rotation
 	static float angle = 0.0f;
-	glRotatef(angle, 0.0, 1.0, 0.0 ); //comment this out to disable the rotation
+//	glRotatef(angle, 0.0, 1.0, 0.0 ); //comment this out to disable the rotation
 
 	if( (angle+=.1f) > 360.0f ) {
 		angle = 0.0f;
@@ -209,6 +221,16 @@ void KeyDown(SDL_Event const* const event) {
 		case SDLK_ESCAPE:
 			xQuit();
 			break;
+
+		//camera control
+		CASE SDLK_w: camera.ShiftZ(-1);
+		CASE SDLK_s: camera.ShiftZ( 1);
+		CASE SDLK_a: camera.ShiftX(-1);
+		CASE SDLK_d: camera.ShiftX( 1);
+		CASE SDLK_q: camera.ShiftY( 1);
+		CASE SDLK_z: camera.ShiftY(-1);
+
+		CASE SDLK_SPACE: camera.SetPosition(0, 0, 0);
 	}
 }
 
