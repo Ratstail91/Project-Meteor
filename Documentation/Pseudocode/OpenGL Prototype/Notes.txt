@@ -1,7 +1,10 @@
 TODO:
 
-Create/complete a model class, to deal with the ingame rendering.
+Create a Plane class, with an unknown number of corners, then typedef it into triangles, quads, etc?
+Create/complete a model class, to deal with the ingame rendering. Can also load models.
+Create a camera class, with a location (x, y, z) and a destination (x, y, z)
 Create a scene where the camera can move around.
+Implement textures.
 
 Official Mesh format:
 .raw
