@@ -1,6 +1,6 @@
 /* File Name: xFramework.h
  * Author: Kayne Ruse
- * Date: 20/4/2012
+ * Date: 28/4/2012
  * Copyright: (c) Kayne Ruse 2012
  * 
  * This file is part of Project RPG.
@@ -23,14 +23,14 @@
  *     This framework contains no initialisation or rendering code.
 */
 #ifndef KR_XFRAMEWORK_H_
-#define KR_XFRAMEWORK_H_
-
-/* Dependencies */
-#include "SDL.h"
+#define KR_XFRAMEWORK_H_ 20120428
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* Dependencies */
+#include "SDL.h"
 
 /* Callback types */
 typedef void (*xBasicCallback)(void);
@@ -39,8 +39,12 @@ typedef void (*xEventCallback)(SDL_Event const* const);
 /* xFramework functions */
 int xSetInitCallback	(xBasicCallback);
 int xSetQuitCallback	(xBasicCallback);
+
+int xSetHeadCallback	(xBasicCallback);
+int xSetTailCallback	(xBasicCallback);
 int xSetUpdateCallback	(xBasicCallback);
 int xSetRenderCallback	(xBasicCallback);
+
 int xSetEventCallback	(xEventCallback, Uint8);
 
 void xProc();

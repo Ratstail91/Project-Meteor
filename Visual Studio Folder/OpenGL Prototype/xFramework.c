@@ -1,6 +1,6 @@
 /* File Name: xFramework.c
  * Author: Kayne Ruse
- * Date: 20/4/2012
+ * Date: 28/4/2012
  * Copyright: (c) Kayne Ruse 2012
  * 
  * This file is part of Project RPG.
@@ -39,8 +39,12 @@ int g_bRunning = TRUE;
 
 xBasicCallback g_fpInit = NULL;
 xBasicCallback g_fpQuit = NULL;
+
+xBasicCallback g_fpHead = NULL;
+xBasicCallback g_fpTail = NULL;
 xBasicCallback g_fpUpdate = NULL;
 xBasicCallback g_fpRender = NULL;
+
 xEventCallback g_fpEvents[SDL_NUMEVENTS] = {LIST_32(NULL)};
 
 /* xFramework functions */
@@ -53,6 +57,18 @@ int  xSetInitCallback(xBasicCallback cb) {
 int xSetQuitCallback(xBasicCallback cb) {
 	if (g_fpQuit != NULL) return 1;
 	g_fpQuit = cb;
+	return 0;
+}
+
+int xSetHeadCallback(xBasicCallback cb) {
+	if (g_fpHead != NULL) return 1;
+	g_fpHead = cb;
+	return 0;
+}
+
+int xSetTailCallback(xBasicCallback cb) {
+	if (g_fpTail != NULL) return 1;
+	g_fpTail = cb;
 	return 0;
 }
 
@@ -81,6 +97,8 @@ void xProc() {
 	if (g_fpInit != NULL) g_fpInit();
 
 	while(g_bRunning) {
+		if (g_fpHead != NULL) g_fpHead();
+
 		while(SDL_PollEvent(&event)) {
 			if (g_fpEvents[event.type] != NULL)
 				g_fpEvents[event.type](&event);
@@ -88,6 +106,8 @@ void xProc() {
 
 		if (g_fpUpdate != NULL) g_fpUpdate();
 		if (g_fpRender != NULL) g_fpRender();
+
+		if (g_fpTail != NULL) g_fpTail();
 	}
 
 	if (g_fpQuit != NULL) g_fpQuit();
