@@ -3,7 +3,7 @@
  * Date: 20/4/2012
  * Copyright: (c) Kayne Ruse 2012
  * 
- * This file is part of Project RPG.
+ * This file is part of Blue Harvest.
  * 
  * Project RPG is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -19,30 +19,17 @@
  * along with Project RPG.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Description: 
- *     Basic bulky camera controls.
+ *     ...
 */
 #include <iostream>
 #include "SDL.h"
 #include "SDL_opengl.h"
-#include "xFramework.h"
+#include "simple_callbacks.h"
 using namespace std;
-
-#include "point.h"
-#include "plane.h"
-
-Point camera;
-Plane plane;
 
 //-------------------------
 //preprocessor directives
 //-------------------------
-
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
-#define SCREEN_BPP (SDL_GetVideoInfo()->vfmt->BitsPerPixel)
-#define SCREEN_FLAGS (SDL_HWSURFACE|SDL_OPENGL)
-
-#define SCALE(x) x
 
 #define CASE break; case
 
@@ -50,43 +37,43 @@ Plane plane;
 //Declarations
 //-------------------------
 
-//xFramework
+//global variables
+SDL_Surface* g_pScreen = NULL;
+
+//main loop
 void Init();
 void Update();
 void Render();
 
 //event loop
-void Quit				(SDL_Event const* const) { xQuit(); };
+void QuitEvent			(SDL_Event const* const);
 void MouseMotion		(SDL_Event const* const);
 void MouseButtonDown	(SDL_Event const* const);
 void MouseButtonUp		(SDL_Event const* const);
 void KeyDown			(SDL_Event const* const);
 void KeyUp				(SDL_Event const* const);
 
-//utilities(temps)
-void DrawPoint(GLfloat* vert, GLubyte* col) {
-	glColor4ubv(col);
-	glVertex3fv(vert);
-}
+//utilities
+void SetScreen			(int w, int h);
 
 //-------------------------
 //Mainline
 //-------------------------
 
 int SDL_main(int, char**) {
-	xSetInitCallback(Init);
-	xSetQuitCallback(SDL_Quit);
-	xSetUpdateCallback(Update);
-	xSetRenderCallback(Render);
+	scSetInitCallback(Init);
+	scSetQuitCallback(SDL_Quit);
+	scSetUpdateCallback(Update);
+	scSetRenderCallback(Render);
 
-	xSetEventCallback(Quit,				SDL_QUIT);
-	xSetEventCallback(MouseMotion,		SDL_MOUSEMOTION);
-	xSetEventCallback(MouseButtonDown,	SDL_MOUSEBUTTONDOWN);
-	xSetEventCallback(MouseButtonUp,	SDL_MOUSEBUTTONUP);
-	xSetEventCallback(KeyDown,			SDL_KEYDOWN);
-	xSetEventCallback(KeyUp,			SDL_KEYUP);
+	scSetEventCallback(QuitEvent,		SDL_QUIT);
+	scSetEventCallback(MouseMotion,		SDL_MOUSEMOTION);
+	scSetEventCallback(MouseButtonDown,	SDL_MOUSEBUTTONDOWN);
+	scSetEventCallback(MouseButtonUp,	SDL_MOUSEBUTTONUP);
+	scSetEventCallback(KeyDown,			SDL_KEYDOWN);
+	scSetEventCallback(KeyUp,			SDL_KEYUP);
 
-	xProc();
+	scProc();
 
 	return 0;
 }
@@ -95,135 +82,51 @@ int SDL_main(int, char**) {
 //Definitions
 //-------------------------
 
+//main loop
 void Init() {
 	//init SDL
-	if (SDL_Init(SDL_INIT_VIDEO)) {
-		cerr << "Failed to init SDL video" << endl;
+	if ( SDL_Init(SDL_INIT_VIDEO) != 0) {
+		cerr << "Failed to initialize SDL" << endl;
+		exit(1);
 	}
 
-	//set OpenGL attributes
-	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	//SDL_GL_SetAttribute is called before SDL_SetVideoMode
 
-	//set video mode
-	if (SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SCREEN_FLAGS) == NULL) {
-		cerr << "Failed to set video mode" << endl;
-	}
+	SetScreen(800, 600);
 
-	//shading model
-	glShadeModel(GL_SMOOTH);
-
-	//culling
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW); //CLOCKWISE 
-	glEnable(GL_CULL_FACE);
-
-	glEnable(GL_DEPTH_TEST);
-
-	//viewport
+	//select the OpenGL clear color
 	glClearColor(0, 0, 0, 0);
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-	//matrix
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-
-	//perspective
-	gluPerspective(60.0, (double)(SCREEN_WIDTH)/(double)(SCREEN_HEIGHT), 1.0, 1024.0);
-//	gluLookAt(0,-2, 2, 0, 0, -1, 0, 1, 0);
-
-	//texture
-
-
-	//debug
-	plane[0][0] =  0;
-	plane[0][1] = -1;
-	plane[0][2] = -5;
-	plane[1][0] =  5;
-	plane[1][1] = -1;
-	plane[1][2] =  2;
-	plane[2][0] = -5;
-	plane[2][1] = -1;
-	plane[2][2] =  2;
+	glShadeModel(GL_FLAT);
 }
 
 void Update() {
-	//debug
-	cout << camera.GetX() << "\t" << camera.GetY() << "\t" << camera.GetZ() << endl;
+	//
 }
 
 void Render() {
-	//prep OpenGL
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	//clear the pixels
+	glClear( GL_COLOR_BUFFER_BIT );
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	//draw the white polygon
+	glColor3f( 1, 1, 1);
 
-	//draw my stuff
-	gluLookAt(
-		camera.GetX(), camera.GetY(), camera.GetZ(),
-		0, 0, 0,
-		camera.GetX(), camera.GetY()+1, camera.GetZ()
-		);
-
-	//colours
-	static GLubyte white[]	= {255, 255, 255, 255};
-	static GLubyte black[]	= {0, 0, 0, 255};
-	static GLubyte red[]	= {255, 0, 0, 255};
-	static GLubyte yellow[]	= {255, 255, 0, 255};
-	static GLubyte blue[]	= {0, 0, 255, 255};
-	static GLubyte green[]	= {0, 255, 0, 255};
-	static GLubyte pink[]	= {255, 0, 255, 255};
-
-	//vertices
-	static GLfloat v1[] = {-1.0f,  1.0f, 0.0f}; //top-corner
-	static GLfloat v2[] = {-1.0f,  0.0f, 0.0f}; //right-corner
-	static GLfloat v3[] = {-1.0f,  0.0f,-1.0f}; //short-corner, into the screen
-	static GLfloat v4[] = { 1.0f,  0.0f, 0.0f}; //point-corner
-
-	//translation
-//	glTranslatef(0, -.5, -3);
-
-	//rotation
-	static float angle = 0.0f;
-//	glRotatef(angle, 0.0, 1.0, 0.0 ); //comment this out to disable the rotation
-
-	if( (angle+=.1f) > 360.0f ) {
-		angle = 0.0f;
-	}
-
-	//begin the shape
-	glBegin(GL_TRIANGLES);
-
-	//side 1
-	DrawPoint(v1, green);
-	DrawPoint(v2, red);
-	DrawPoint(v3, yellow);
-
-	//side 2
-	DrawPoint(v1, green);
-	DrawPoint(v4, blue);
-	DrawPoint(v2, red);
-
-	//side 3
-	DrawPoint(v1, green);
-	DrawPoint(v3, yellow);
-	DrawPoint(v4, blue);
-
-	//base
-	DrawPoint(v2, red);
-	DrawPoint(v4, blue);
-	DrawPoint(v3, yellow);
-
-	//draw the pink plane
-	glColor4ubv(pink);
-	plane.Render();
-
+	glBegin(GL_POLYGON);
+		glVertex3f(0.25, 0.25, 0.0);
+		glVertex3f(0.75, 0.25, 0.0);
+		glVertex3f(0.75, 0.75, 0.0);
+		glVertex3f(0.25, 0.75, 0.0);
 	glEnd();
 
-	//swap the buffers
+	//start processing the buffered OpenGL routines
+	glFlush();
+
+	//SDL manages the actual screen
 	SDL_GL_SwapBuffers();
+}
+
+//event loop
+void QuitEvent(SDL_Event const* const event) {
+	scQuit();
 }
 
 void MouseMotion(SDL_Event const* const event) {
@@ -241,21 +144,30 @@ void MouseButtonUp(SDL_Event const* const event) {
 void KeyDown(SDL_Event const* const event) {
 	switch(event->key.keysym.sym) {
 		case SDLK_ESCAPE:
-			xQuit();
+			QuitEvent(NULL);
 			break;
-
-		//camera control
-		CASE SDLK_w: camera.ShiftZ(-1);
-		CASE SDLK_s: camera.ShiftZ( 1);
-		CASE SDLK_a: camera.ShiftX(-1);
-		CASE SDLK_d: camera.ShiftX( 1);
-		CASE SDLK_q: camera.ShiftY( 1);
-		CASE SDLK_z: camera.ShiftY(-1);
-
-		CASE SDLK_SPACE: camera.SetPosition(0, 0, 0);
 	}
 }
 
 void KeyUp(SDL_Event const* const event) {
 	//
+}
+
+//utilities
+void SetScreen(int w, int h) {
+	//init the screen, w/ OpenGL flags
+	g_pScreen = SDL_SetVideoMode(w, h, SDL_GetVideoInfo()->vfmt->BitsPerPixel, SDL_HWSURFACE|SDL_GL_DOUBLEBUFFER|SDL_OPENGL);
+
+	if (g_pScreen == NULL) {
+		cerr << "Failed to initialize the screen" << endl;
+		exit(1);
+	}
+
+	//initialise the OpenGL viewing values
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0, 1, 0, 1, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
