@@ -39,6 +39,8 @@ using namespace std;
 
 //global variables
 SDL_Surface* g_pScreen = NULL;
+GLfloat g_fSpin = 0;
+bool g_bRotate = true;
 
 //main loop
 void Init();
@@ -100,22 +102,34 @@ void Init() {
 }
 
 void Update() {
-	//
+	if (g_bRotate) {
+		g_fSpin += 0.2f;
+
+		if (g_fSpin > 360) g_fSpin = 0;
+	}
 }
 
 void Render() {
 	//clear the pixels
 	glClear( GL_COLOR_BUFFER_BIT );
 
+	//rotation
+	glPushMatrix();
+	glRotatef(g_fSpin, 0, 0, 1);
+
 	//draw the white polygon
 	glColor3f( 1, 1, 1);
+	glRectf(-0.25f, -0.25f, 0.25f, 0.25f);
 
-	glBegin(GL_POLYGON);
-		glVertex3f(0.25, 0.25, 0.0);
-		glVertex3f(0.75, 0.25, 0.0);
-		glVertex3f(0.75, 0.75, 0.0);
-		glVertex3f(0.25, 0.75, 0.0);
-	glEnd();
+//	glBegin(GL_POLYGON);
+//		glVertex3f(0.25, 0.25, 0.0);
+//		glVertex3f(0.75, 0.25, 0.0);
+//		glVertex3f(0.75, 0.75, 0.0);
+//		glVertex3f(0.25, 0.75, 0.0);
+//	glEnd();
+
+	//end rotation
+	glPopMatrix();
 
 	//start processing the buffered OpenGL routines
 	glFlush();
@@ -134,7 +148,10 @@ void MouseMotion(SDL_Event const* const event) {
 }
 
 void MouseButtonDown(SDL_Event const* const event) {
-	//
+	if (g_bRotate)
+		g_bRotate = false;
+	else
+		g_bRotate = true;
 }
 
 void MouseButtonUp(SDL_Event const* const event) {
@@ -167,7 +184,7 @@ void SetScreen(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0, 1, 0, 1, -1, 1);
+	glOrtho(-1, 1, -1, 1, -1, 1); //derped numbers center around (0,0,0); this should have the adjustment-according-to-the-screen-size code as an argument
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
