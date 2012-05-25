@@ -1,6 +1,6 @@
-## Blue Harvest
+## Project Meteor
 
-Blue Harvest is an open source SDL/OpenGL dungeon crawler video game. All of the information about this game can be found in "Documentation/Game Design Document.doc”
+Project Meteor is an open source SDL/OpenGL dungeon crawler video game. All of the information about this game can be found in "Documentation/Game Design Document.docx”
 
 ## Instructions
 

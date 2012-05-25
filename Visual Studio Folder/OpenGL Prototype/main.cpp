@@ -3,7 +3,7 @@
  * Date: 20/4/2012
  * Copyright: (c) Kayne Ruse 2012
  * 
- * This file is part of Blue Harvest.
+ * This file is part of Project Meteor.
  * 
  * Project RPG is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C++ Express 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project RPG", "Project RPG\Project RPG.vcproj", "{319C6785-4B00-4338-BF08-173B64A8ADB5}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL Prototype", "OpenGL Prototype\OpenGL Prototype.vcproj", "{7CB2EB05-632E-493B-80D4-20E0CFB874B3}"
 EndProject
 Global
@@ -11,10 +9,6 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{319C6785-4B00-4338-BF08-173B64A8ADB5}.Debug|Win32.ActiveCfg = Debug|Win32
-		{319C6785-4B00-4338-BF08-173B64A8ADB5}.Debug|Win32.Build.0 = Debug|Win32
-		{319C6785-4B00-4338-BF08-173B64A8ADB5}.Release|Win32.ActiveCfg = Release|Win32
-		{319C6785-4B00-4338-BF08-173B64A8ADB5}.Release|Win32.Build.0 = Release|Win32
 		{7CB2EB05-632E-493B-80D4-20E0CFB874B3}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7CB2EB05-632E-493B-80D4-20E0CFB874B3}.Debug|Win32.Build.0 = Debug|Win32
 		{7CB2EB05-632E-493B-80D4-20E0CFB874B3}.Release|Win32.ActiveCfg = Release|Win32
