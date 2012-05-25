@@ -29,77 +29,22 @@
 //-------------------------
 
 Point::Point() {
-	m_fCoords[0] = 0;
-	m_fCoords[1] = 0;
-	m_fCoords[2] = 0;
+	x = 0;
+	y = 0;
+	z = 0;
 }
 
 Point::Point(GLfloat a, GLfloat b, GLfloat c) {
-	m_fCoords[0] = a;
-	m_fCoords[1] = b;
-	m_fCoords[2] = c;
+	x = a;
+	y = b;
+	z = c;
 }
 
 GLfloat& Point::operator[](int i) {
-	if (i < 0 || i >= 3) {
-		throw(std::out_of_range("Unknown Point element"));
+	switch(i) {
+		case 0: return x;
+		case 1: return y;
+		case 2: return z;
+		default: throw(std::out_of_range("Unknown Point element"));
 	}
-
-	return m_fCoords[i];
-}
-
-GLfloat* Point::GetCoords() {
-	return m_fCoords;
-}
-
-//-------------------------
-//Accessors and mutators
-//-------------------------
-
-void Point::SetPosition(GLfloat a, GLfloat b, GLfloat c) {
-	m_fCoords[0] = a;
-	m_fCoords[1] = b;
-	m_fCoords[2] = c;
-}
-
-void Point::ShiftPosition(GLfloat a, GLfloat b, GLfloat c) {
-	m_fCoords[0] += a;
-	m_fCoords[1] += b;
-	m_fCoords[2] += c;
-}
-
-GLfloat Point::SetX(GLfloat f) {
-	return m_fCoords[0] = f;
-}
-
-GLfloat Point::SetY(GLfloat f) {
-	return m_fCoords[1] = f;
-}
-
-GLfloat Point::SetZ(GLfloat f) {
-	return m_fCoords[2] = f;
-}
-
-GLfloat Point::ShiftX(GLfloat f) {
-	return m_fCoords[0] += f;
-}
-
-GLfloat Point::ShiftY(GLfloat f) {
-	return m_fCoords[1] += f;
-}
-
-GLfloat Point::ShiftZ(GLfloat f) {
-	return m_fCoords[2] += f;
-}
-
-GLfloat Point::GetX() {
-	return m_fCoords[0];
-}
-
-GLfloat Point::GetY() {
-	return m_fCoords[1];
-}
-
-GLfloat Point::GetZ() {
-	return m_fCoords[2];
 }

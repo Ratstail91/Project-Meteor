@@ -24,6 +24,7 @@
 #ifndef KR_POINT_H_
 #define KR_POINT_H_
 
+#include "global_macros.h"
 #include "SDL_opengl.h"
 
 class Point {
@@ -34,27 +35,10 @@ public:
 
 	GLfloat& operator[](int);
 
-	GLfloat* GetCoords();
-
 	/* Accessors and mutators */
-	void SetPosition(GLfloat, GLfloat, GLfloat);
-	void ShiftPosition(GLfloat, GLfloat, GLfloat);
-
-	GLfloat SetX(GLfloat);
-	GLfloat SetY(GLfloat);
-	GLfloat SetZ(GLfloat);
-
-	GLfloat ShiftX(GLfloat);
-	GLfloat ShiftY(GLfloat);
-	GLfloat ShiftZ(GLfloat);
-
-	GLfloat GetX();
-	GLfloat GetY();
-	GLfloat GetZ();
-
-private:
-	/* Private access members */
-	GLfloat m_fCoords[3]; //x, y, z
+	BP_MEMBER(GetX, SetX, GLfloat, x);
+	BP_MEMBER(GetY, SetY, GLfloat, y);
+	BP_MEMBER(GetZ, SetZ, GLfloat, z);
 };
 
 #endif

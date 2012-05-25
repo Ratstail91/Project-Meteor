@@ -189,7 +189,6 @@
 					>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -201,7 +200,6 @@
 					>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCustomBuildTool"
@@ -213,11 +211,10 @@
 				Name="Plane"
 				>
 				<File
-					RelativePath=".\plane.cpp"
+					RelativePath=".\triangle.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -225,11 +222,10 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\plane.h"
+					RelativePath=".\triangle.h"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="true"
 						>
 						<Tool
 							Name="VCCustomBuildTool"

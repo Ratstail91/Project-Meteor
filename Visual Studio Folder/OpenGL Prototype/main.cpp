@@ -27,6 +27,10 @@
 #include "simple_callbacks.h"
 using namespace std;
 
+/* This triangle class and the point class will probably be useless overall.
+*/
+#include "triangle.h"
+
 //-------------------------
 //preprocessor directives
 //-------------------------
@@ -41,6 +45,8 @@ using namespace std;
 SDL_Surface* g_pScreen = NULL;
 GLfloat g_fSpin = 0;
 bool g_bRotate = true;
+
+Triangle triangle;
 
 //main loop
 void Init();
@@ -94,11 +100,36 @@ void Init() {
 
 	//SDL_GL_SetAttribute is called before SDL_SetVideoMode
 
-	SetScreen(800, 600);
+	SetScreen(600, 600);
 
-	//select the OpenGL clear color
+	//Setup OpenGL
 	glClearColor(0, 0, 0, 0);
-	glShadeModel(GL_FLAT);
+	glClearDepth(1.0);
+
+	glShadeModel(GL_SMOOTH);
+
+	//culling
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+
+	//arrays
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+//	textures, etc.
+
+	//debugging
+	triangle[0][0] = 0.0f;
+	triangle[0][1] = 0.0f;
+	triangle[0][2] = 0.0f;
+
+	triangle[1][0] = 0.5f;
+	triangle[1][1] = 0.0f;
+	triangle[1][2] = 0.0f;
+
+	triangle[2][0] = 0.5f;
+	triangle[2][1] = 0.5f;
+	triangle[2][2] = 0.0f;
 }
 
 void Update() {
@@ -111,9 +142,9 @@ void Update() {
 
 void Render() {
 	//clear the pixels
-	glClear( GL_COLOR_BUFFER_BIT );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	//rotation
+	//begin rotation
 	glPushMatrix();
 	glRotatef(g_fSpin, 0, 0, 1);
 
@@ -121,15 +152,64 @@ void Render() {
 	glColor3f( 1, 1, 1);
 	glRectf(-0.25f, -0.25f, 0.25f, 0.25f);
 
-//	glBegin(GL_POLYGON);
-//		glVertex3f(0.25, 0.25, 0.0);
-//		glVertex3f(0.75, 0.25, 0.0);
-//		glVertex3f(0.75, 0.75, 0.0);
-//		glVertex3f(0.25, 0.75, 0.0);
-//	glEnd();
-
 	//end rotation
 	glPopMatrix();
+
+/*	//draw the green arrow
+	glColor3f(0, 1, 0);
+	glBegin(GL_POLYGON);
+		glVertex2f(0.4f, 0.0f);
+		glVertex2f(0.6f, 0.15f);
+		glVertex2f(0.4f, 0.3f);
+		glVertex2f(0.0f, 0.3f);
+		glVertex2f(0.0f, 0.0f);
+	glEnd();
+
+	//draw the red triangle
+	glColor3f(1, 0, 0);
+
+	glBegin(GL_TRIANGLES);
+		glVertex3fv(reinterpret_cast<GLfloat*>(&triangle[0]));
+		glVertex3fv(reinterpret_cast<GLfloat*>(&triangle[1]));
+		glVertex3fv(reinterpret_cast<GLfloat*>(&triangle[2]));
+	glEnd();
+*/
+	//draw the arrays
+	static GLfloat afVertices[] = {
+		0.0, 0.0,
+		0.5, 0.0,
+		0.75, 0.5,
+		0.75, -0.5
+	};
+
+	static GLfloat afColours[] = {
+		1.0,	0.0,	0.0,
+		0.0,	1.0,	0.0,
+		0.0,	0.0,	1.0,
+		1.0,	1.0,	0.0
+	};
+
+	//dn't forget culling when writing this order: CCW
+	static GLubyte aiFaces[] = {
+		0, 1, 2, 0, 3, 1, 2, 1, 3
+	};
+
+	glColorPointer(3, GL_FLOAT, 0, afColours);
+	glVertexPointer(2, GL_FLOAT, 0, afVertices);
+
+//	glBegin(GL_TRIANGLES);
+//		glArrayElement(0);
+//		glArrayElement(1);
+//		glArrayElement(2);
+//	glEnd();
+
+	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_BYTE, aiFaces); //hops around the arrays
+//	glDrawArrays(GL_TRIANGLES, 0, 3); //plows through the arrays
+
+	/* Overall I think that interleaved verticies would be the best approach given
+	 * The requirements of this game. I will need to research texturing of couse, but
+	 * That is just a matter of time.
+	*/
 
 	//start processing the buffered OpenGL routines
 	glFlush();

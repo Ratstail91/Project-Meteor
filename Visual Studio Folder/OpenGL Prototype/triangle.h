@@ -1,4 +1,4 @@
-/* File Name: plane.h
+/* File Name: triangle.h
  * Author: Kayne Ruse
  * Date: 21/4/2012
  * Copyright: (c) Kayne Ruse 2012
@@ -21,23 +21,22 @@
  * Description: 
  *     A triangular plane in 3D space.
 */
-#ifndef KR_PLANE_H_
-#define KR_PLANE_H_
+#ifndef KR_TRIANGLE_H_
+#define KR_TRIANGLE_H_
 
+#include "global_macros.h" //BAD KAYNE!! I should rename this in codebase, or even, I don't know, remove it?
 #include "point.h"
 
-class Plane {
+class Triangle {
 public:
 	/* Public access members */
-	Plane();
-	Plane(Point, Point, Point);
+	Triangle();
+	Triangle(Point, Point, Point);
 	Point& operator[](int);
 
-	void Render();
-
-private:
-	/* Private access members */
-	Point m_vertices[3];
+	BP_MEMBER(GetV1, SetV1, Point, v1);
+	BP_MEMBER(GetV2, SetV2, Point, v2);
+	BP_MEMBER(GetV3, SetV3, Point, v3);
 };
 
 #endif

@@ -1,4 +1,4 @@
-/* File Name: plane.cpp
+/* File Name: triangle.cpp
  * Author: Kayne Ruse
  * Date: 21/4/2012
  * Copyright: (c) Kayne Ruse 2012
@@ -22,32 +22,27 @@
  *     A triangular plane in 3D space.
 */
 #include <stdexcept>
-#include "plane.h"
+#include "triangle.h"
 
 //-------------------------
 //Public access members
 //-------------------------
 
-Plane::Plane() {
+Triangle::Triangle() {
 	//
 }
 
-Plane::Plane(Point a, Point b, Point c) {
-	m_vertices[0] = a;
-	m_vertices[1] = b;
-	m_vertices[2] = c;
+Triangle::Triangle(Point a, Point b, Point c) {
+	v1 = a;
+	v2 = b;
+	v3 = c;
 }
 
-Point& Plane::operator[](int i) {
-	if (i < 0 || i >= 3) {
-		throw(std::out_of_range("Unknown Plane element"));
+Point& Triangle::operator[](int i) {
+	switch(i) {
+		case 0: return v1;
+		case 1: return v2;
+		case 2: return v3;
+		default: throw(std::out_of_range("Unknown Triangle element"));
 	}
-
-	return m_vertices[i];
-}
-
-void Plane::Render() {
-	glVertex3fv(m_vertices[0].GetCoords());
-	glVertex3fv(m_vertices[1].GetCoords());
-	glVertex3fv(m_vertices[2].GetCoords());
 }
