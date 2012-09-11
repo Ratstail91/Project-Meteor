@@ -1,41 +1,14 @@
 /* File Name: main.cpp
  * Author: Kayne Ruse
- * Date: 20/4/2012
+ * Date: 
  * Copyright: (c) Kayne Ruse 2012
- * 
- * This file is part of Project Meteor.
- * 
- * Project Meteor is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * Project Meteor is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with Project Meteor.  If not, see <http://www.gnu.org/licenses/>.
- * 
  * Description: 
- *     ...
 */
 #include <iostream>
 #include "SDL.h"
 #include "SDL_opengl.h"
 #include "simple_callbacks.h"
 using namespace std;
-
-/* This triangle class and the point class will probably be useless overall.
-*/
-#include "triangle.h"
-
-//-------------------------
-//preprocessor directives
-//-------------------------
-
-#define CASE break; case
 
 //-------------------------
 //Declarations
@@ -45,8 +18,6 @@ using namespace std;
 SDL_Surface* g_pScreen = NULL;
 GLfloat g_fSpin = 0;
 bool g_bRotate = true;
-
-Triangle triangle;
 
 //main loop
 void Init();
@@ -69,17 +40,17 @@ void SetScreen			(int w, int h);
 //-------------------------
 
 int SDL_main(int, char**) {
-	scSetInitCallback(Init);
-	scSetQuitCallback(SDL_Quit);
-	scSetUpdateCallback(Update);
-	scSetRenderCallback(Render);
+	scSetInit(Init);
+	scSetQuit(SDL_Quit);
+	scSetUpdate(Update);
+	scSetRender(Render);
 
-	scSetEventCallback(QuitEvent,		SDL_QUIT);
-	scSetEventCallback(MouseMotion,		SDL_MOUSEMOTION);
-	scSetEventCallback(MouseButtonDown,	SDL_MOUSEBUTTONDOWN);
-	scSetEventCallback(MouseButtonUp,	SDL_MOUSEBUTTONUP);
-	scSetEventCallback(KeyDown,			SDL_KEYDOWN);
-	scSetEventCallback(KeyUp,			SDL_KEYUP);
+	scSetEvent(QuitEvent,		SDL_QUIT);
+	scSetEvent(MouseMotion,		SDL_MOUSEMOTION);
+	scSetEvent(MouseButtonDown,	SDL_MOUSEBUTTONDOWN);
+	scSetEvent(MouseButtonUp,	SDL_MOUSEBUTTONUP);
+	scSetEvent(KeyDown,			SDL_KEYDOWN);
+	scSetEvent(KeyUp,			SDL_KEYUP);
 
 	scProc();
 
@@ -99,8 +70,9 @@ void Init() {
 	}
 
 	//SDL_GL_SetAttribute is called before SDL_SetVideoMode
+	//what are these?
 
-	SetScreen(600, 600);
+	SetScreen(800, 600);
 
 	//Setup OpenGL
 	glClearColor(0, 0, 0, 0);
@@ -117,19 +89,6 @@ void Init() {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 //	textures, etc.
-
-	//debugging
-	triangle[0][0] = 0.0f;
-	triangle[0][1] = 0.0f;
-	triangle[0][2] = 0.0f;
-
-	triangle[1][0] = 0.5f;
-	triangle[1][1] = 0.0f;
-	triangle[1][2] = 0.0f;
-
-	triangle[2][0] = 0.5f;
-	triangle[2][1] = 0.5f;
-	triangle[2][2] = 0.0f;
 }
 
 void Update() {
@@ -241,7 +200,7 @@ void MouseButtonUp(SDL_Event const* const event) {
 void KeyDown(SDL_Event const* const event) {
 	switch(event->key.keysym.sym) {
 		case SDLK_ESCAPE:
-			QuitEvent(NULL);
+			scQuit();
 			break;
 	}
 }
